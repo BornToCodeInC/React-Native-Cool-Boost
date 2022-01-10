@@ -1,9 +1,13 @@
 import React, { useState } from 'react';
-import { StyleSheet, View, Image, Text, SafeAreaView, ScrollView, Button, Alert, RefreshControl } from 'react-native';
+import { StyleSheet, View, Image, Text, SafeAreaView, ScrollView, Pressable, Alert, RefreshControl } from 'react-native';
 import { Header } from '../../components/Header/Header';
 import { IconBasket } from '../../components/icons/IconBasket';
 import { IconHeart } from '../../components/icons/IconHeart';
 import { IconArrowLeft } from '../../components/icons/IconArrowLeft';
+
+const wait = (timeout: number) => {
+    return new Promise(resolve => setTimeout(resolve, timeout));
+}
 
 export const ProductDetailsScreen: React.FC = (): JSX.Element => {
     const [refreshing, setRefreshing] = useState(false);
@@ -16,10 +20,6 @@ export const ProductDetailsScreen: React.FC = (): JSX.Element => {
         id: '16'
     };
 
-    const wait = (timeout: number) => {
-        return new Promise(resolve => setTimeout(resolve, timeout));
-    }
-
     const onRefresh = React.useCallback(() => {
         setRefreshing(true);
         wait(2000).then(() => setRefreshing(false));
@@ -27,13 +27,7 @@ export const ProductDetailsScreen: React.FC = (): JSX.Element => {
 
     return (
     <SafeAreaView>
-        <ScrollView
-            refreshControl={
-            <RefreshControl
-                refreshing={refreshing}
-                onRefresh={onRefresh}
-            />
-        }>
+        <View style={styles.headerContainer}>
             <Header>
                 <View>
                     <IconArrowLeft fill={'#FFFFFF'} />
@@ -45,6 +39,15 @@ export const ProductDetailsScreen: React.FC = (): JSX.Element => {
                     </View>
                 </View>
             </Header>
+        </View>
+        <ScrollView
+            refreshControl={
+            <RefreshControl
+                refreshing={refreshing}
+                onRefresh={onRefresh}
+            />
+        }>
+
             <View style={styles.container}>
                 <View style={styles.imgContainer}>
                     <Image
@@ -55,17 +58,16 @@ export const ProductDetailsScreen: React.FC = (): JSX.Element => {
                 </View>
                 <View style={styles.cell}>
                     <Text style={styles.cellValue}>{product.attributes.name}</Text>
-                    <Text style={styles.cellTitle}>{product.attributes.price}</Text>
+                    <Text style={styles.cellTitle}>${product.attributes.price}</Text>
                 </View>
                 <View style={styles.cell}>
                     <Text style={styles.cellTitle}>Select color</Text>
-                    <View style={styles.btn}>
-                        <Button
-                            title="Blue"
-                            disabled
-                            onPress={() => Alert.alert('Cannot press this one')}
-                        />
-                    </View>
+                    <Pressable
+                        style={styles.btn}
+                        onPress={() => Alert.alert('Cannot press this one')}
+                    >
+                        <Text style={styles.btnText}>Blue</Text>
+                    </Pressable>
                 </View>
                 <View style={styles.cell}>
                     <Text style={styles.cellTitle}>Description</Text>
@@ -74,12 +76,12 @@ export const ProductDetailsScreen: React.FC = (): JSX.Element => {
             </View>
         </ScrollView>
         <View style={styles.container}>
-            <View style={styles.mainBtn}>
-                <Button
-                    title="Add to cart"
-                    onPress={() => Alert.alert('Cannot press this one')}
-                />
-            </View>
+            <Pressable
+                style={styles.mainBtn}
+                onPress={() => Alert.alert('Cannot press this one')}
+            >
+                <Text style={styles.mainBtnText}>Add to cart</Text>
+            </Pressable>
         </View>
     </SafeAreaView>
     );
@@ -89,6 +91,9 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         marginHorizontal: 20,
+    },
+    headerContainer: {
+        height: 55,
     },
     headerIconRight: {
         paddingLeft: 30,
@@ -109,17 +114,33 @@ const styles = StyleSheet.create({
         marginTop: 20,
     },
     btn: {
+        backgroundColor: '#F7F7F7',
+        paddingVertical: 5,
+        paddingHorizontal: 10,
         alignSelf: 'flex-start',
+    },
+    btnText: {
+        color: '#4A4A4A',
+        fontSize: 15,
+        lineHeight: 20,
     },
     mainBtn: {
         flex: 1,
         width: '100%',
         position: 'absolute',
-        bottom: 10,
+        bottom: 65,
         left: 0,
         backgroundColor: '#008ACE',
+        paddingVertical: 12,
+
+    },
+    mainBtnText: {
+        textAlign: 'center',
+        textTransform: 'uppercase',
         fontSize: 15,
+        fontWeight: '500',
         lineHeight: 16,
+        color: '#FFFFFF',
     },
     cell: {
         flex: 1,
@@ -139,5 +160,8 @@ const styles = StyleSheet.create({
         marginTop: 10,
         fontSize: 16,
         color: '#2e2e2e',
+    },
+    lastCell: {
+        marginBottom: 10,
     },
 });
