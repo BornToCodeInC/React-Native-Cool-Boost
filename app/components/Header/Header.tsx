@@ -1,7 +1,7 @@
 import React from 'react';
 import { StyleSheet, View } from 'react-native';
 
-export const Header:React.FC  = ({children}): JSX.Element => {
+export const Header: React.FC<React.ReactNode>  = ({children}): JSX.Element => {
     return (
         <View
             style={styles.container}>
