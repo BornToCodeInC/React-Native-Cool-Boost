@@ -1,37 +1,57 @@
-import React, { useState } from 'react';
-import { StyleSheet, View, Image, Text, SafeAreaView, ScrollView, Pressable, Alert, RefreshControl } from 'react-native';
+import React, { useContext, useState } from 'react';
+import { StyleSheet, View, Image, Text, SafeAreaView, ScrollView, Pressable, RefreshControl } from 'react-native';
 import { Header } from '../../components/Header/Header';
 import { IconBasket } from '../../components/icons/IconBasket';
 import { IconHeart } from '../../components/icons/IconHeart';
 import { IconArrowLeft } from '../../components/icons/IconArrowLeft';
+import { ProductsContext } from '../../contexts/ProductsContext';
+import { AddToCartModal } from '../AddToCartModal/AddToCartModal';
 
 const wait = (timeout: number) => {
     return new Promise(resolve => setTimeout(resolve, timeout));
 }
 
-export const ProductDetailsScreen: React.FC = (): JSX.Element => {
+export const ProductDetailsScreen: React.FC = ({ route, navigation }): JSX.Element => {
     const [refreshing, setRefreshing] = useState(false);
-    const product = {
-        attributes: {
-            price: '86.99',
-            description: 'Doloremque ab accusamus blanditiis et. Deleniti ma…oloribus ad. Non repellat maiores delectus rerum.',
-            name: 'Raw Edge T Shirt'
-        },
-        id: '16'
+    const [selectedColor, setSelectedColor] = useState('');
+    const [modalVisible, setModalVisible] = useState(false);
+    const successModalState = {
+        title: 'Product added to your cart',
+        iconName: 'check-circle',
+        iconColor: '#A5DC86',
+        description: '',
     };
+    const failModalState = {
+        title: 'Select color',
+        iconName: 'times-circle',
+        iconColor: '#DD6B55',
+        description: 'Please select your color to add this item in your cart',
+    };
+    const [modalState, setModalState] = useState(successModalState);
+    const { id } = route.params;
+
+    const { state } = useContext(ProductsContext);
+
+    const product = state.data.filter((product) => product.id === id)[0];
 
     const onRefresh = React.useCallback(() => {
         setRefreshing(true);
         wait(2000).then(() => setRefreshing(false));
     }, []);
 
+    const showModal = () => {
+        setModalState(selectedColor ? successModalState : failModalState);
+        setModalVisible(true);
+    };
+    const hideModal = () => setModalVisible(false);
+
     return (
     <SafeAreaView>
         <View style={styles.headerContainer}>
             <Header>
-                <View>
+                <Pressable onPress={() => navigation.goBack()}>
                     <IconArrowLeft fill={'#FFFFFF'} />
-                </View>
+                </Pressable>
                 <View style={styles.headerIcons}>
                     <IconHeart fill={'#FFFFFF'} />
                     <View style={styles.headerIconRight}>
@@ -52,7 +72,7 @@ export const ProductDetailsScreen: React.FC = (): JSX.Element => {
                 <View style={styles.imgContainer}>
                     <Image
                         style={styles.img}
-                        source={{uri: `https://picsum.photos/id/${product.id}/250`}}
+                        source={{uri: `https://picsum.photos/id/${id}/250`}}
                         resizeMode={'contain'}
                     />
                 </View>
@@ -64,7 +84,7 @@ export const ProductDetailsScreen: React.FC = (): JSX.Element => {
                     <Text style={styles.cellTitle}>Select color</Text>
                     <Pressable
                         style={styles.btn}
-                        onPress={() => Alert.alert('Cannot press this one')}
+                        onPress={() => setSelectedColor('Blue')}
                     >
                         <Text style={styles.btnText}>Blue</Text>
                     </Pressable>
@@ -78,10 +98,18 @@ export const ProductDetailsScreen: React.FC = (): JSX.Element => {
         <View style={styles.container}>
             <Pressable
                 style={styles.mainBtn}
-                onPress={() => Alert.alert('Cannot press this one')}
+                onPress={showModal}
             >
                 <Text style={styles.mainBtnText}>Add to cart</Text>
             </Pressable>
+            <AddToCartModal
+                isVisible={modalVisible}
+                dismiss={hideModal}
+                title={modalState.title}
+                iconName={modalState.iconName}
+                iconColor={modalState.iconColor}
+                description={modalState.description}
+            />
         </View>
     </SafeAreaView>
     );

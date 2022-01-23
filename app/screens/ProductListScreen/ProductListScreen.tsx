@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from 'react';
-import { FlatList, View, StyleSheet, Text, ScrollView, RefreshControl } from 'react-native';
+import React, { useEffect, useState, useContext } from 'react';
+import { FlatList, View, StyleSheet, Text, RefreshControl, Alert, Pressable } from 'react-native';
 import Axios from 'axios';
 import { ProductListItem } from './components/ProductListItem/ProductListItem';
 import { Header } from '../../components/Header/Header';
@@ -7,20 +7,23 @@ import { IconMenu } from '../../components/icons/IconMenu';
 import { IconBasket } from '../../components/icons/IconBasket';
 import { API_URL } from '../../helpers/constants';
 import { SearchBox } from '../../components/SearchBox/SearchBox';
+import { ProductsContext } from '../../contexts/ProductsContext';
+import { getProducts } from '../../actions/ProductsAction';
 
-export const ProductListScreen: React.FC = (): JSX.Element => {
+export const ProductListScreen: React.FC = ({ navigation }): JSX.Element => {
     const [list, setList] = useState<any>([]);
     const [isLoading, setIsLoading] = useState<boolean>(false);
+    const { state, dispatch } = useContext(ProductsContext);
 
     useEffect(() => {
-        onRefresh();
+        getProducts(dispatch);
     }, []);
 
     const renderItem = ({item}) => {
         return (
             <ProductListItem
                 product={item}
-                onPress={() => {}}
+                onPress={() => navigation.navigate('Details', {id: item.id})}
             />
         );
     };
@@ -31,7 +34,8 @@ export const ProductListScreen: React.FC = (): JSX.Element => {
     }, []);
 
     const onScrollToEnd = ({distanceFromEnd}) => {
-        getData(false);
+        Alert.alert(`${state.data.length}`);
+        getProducts(dispatch, state.data.length);
     };
 
     const getData = (isRefreshing: boolean) => {
@@ -57,25 +61,29 @@ export const ProductListScreen: React.FC = (): JSX.Element => {
 
     return (
                 <View>
+                    <View style={styles.headerContainer}>
+                        <Header>
+                            <Pressable onPress={() => navigation.openDrawer()}>
+                                <IconMenu
+                                    fill={'#FFFFFF'}
+                                />
+                            </Pressable>
+                            <Text style={styles.headerTitle}>
+                                Ecommerce Store
+                            </Text>
+                            <IconBasket
+                                fill={'#FFFFFF'}
+                            />
+                        </Header>
+                    </View>
                     <FlatList
                         ListHeaderComponent={() => (
                             <>
-                                <Header>
-                                    <IconMenu
-                                        fill={'#FFFFFF'}
-                                    />
-                                    <Text style={styles.headerTitle}>
-                                        Ecommerce Store
-                                    </Text>
-                                    <IconBasket
-                                        fill={'#FFFFFF'}
-                                    />
-                                </Header>
                                 <SearchBox />
                             </>
                         )}
                         numColumns={2}
-                        data={list}
+                        data={state.data}
                         renderItem={renderItem}
                         keyExtractor={keyExtractor}
                         refreshControl={<RefreshControl
@@ -95,6 +103,9 @@ const styles = StyleSheet.create({
     container: {
         flex: 1/2,
         marginHorizontal: 20,
+    },
+    headerContainer: {
+        height: 55,
     },
     headerTitle: {
         color: '#FFFFFF',
