@@ -4,6 +4,8 @@ import {
     DrawerContentScrollView,
     DrawerItem,
 } from '@react-navigation/drawer';
+import 'react-native-get-random-values';
+import { v4 as uuid } from 'uuid';
 
 LogBox.ignoreLogs([
     "[react-native-gesture-handler] Seems like you\'re using an old API with gesture components, check out new Gestures system!",
@@ -31,14 +33,14 @@ export const CustomDrawerContent: React.FC = (props: any): JSX.Element => {
                         lastGroupName = groupName;
                     } else newGroup = false;
                     return (
-                        <View style={index < lastRouteIndex && styles.drawerContentGroup} key={index}>
+                        <View style={index < lastRouteIndex && styles.drawerContentGroup} key={uuid()}>
                             {newGroup ? (
-                                <Text key={groupName} style={styles.drawerSubtitle}>
+                                <Text style={styles.drawerSubtitle}>
                                     {groupName}
                                 </Text>
                             ) : null}
                             <DrawerItem
-                                key={route.key}
+                                key={uuid()}
                                 icon={drawerIcon}
                                 label={
                                     () =>

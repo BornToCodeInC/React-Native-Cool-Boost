@@ -29,6 +29,8 @@ export const getProducts = (dispatch, offset = 0) => {
     Axios.get(
         `${API_URL}?fields[product]=price,description,name&per_page=${limit}&page=${page}`)
         .then((response) => {
+            console.log('test');
+            console.log(response.data.data);
             dispatch({
                 type: ProductsActionTypes.GET_PRODUCTS_SUCCESS,
                 payload: {
@@ -37,6 +39,7 @@ export const getProducts = (dispatch, offset = 0) => {
             });
         })
         .catch((error) => {
+            console.log('err');
             dispatch({
                 type: ProductsActionTypes.GET_PRODUCTS_ERROR,
                 payload: { error },

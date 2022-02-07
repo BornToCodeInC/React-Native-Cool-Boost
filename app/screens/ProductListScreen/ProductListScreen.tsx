@@ -1,6 +1,8 @@
 import React, { useEffect, useState, useContext } from 'react';
 import { FlatList, View, StyleSheet, Text, RefreshControl, Alert, Pressable } from 'react-native';
 import Axios from 'axios';
+import 'react-native-get-random-values';
+import { v4 as uuid } from 'uuid';
 import { ProductListItem } from './components/ProductListItem/ProductListItem';
 import { Header } from '../../components/Header/Header';
 import { IconMenu } from '../../components/icons/IconMenu';
@@ -9,14 +11,19 @@ import { API_URL } from '../../helpers/constants';
 import { SearchBox } from '../../components/SearchBox/SearchBox';
 import { ProductsContext } from '../../contexts/ProductsContext';
 import { getProducts } from '../../actions/ProductsAction';
+import { ErrorModal } from '../ErrorModal/ErrorModal';
 
 export const ProductListScreen: React.FC = ({ navigation }): JSX.Element => {
     const [list, setList] = useState<any>([]);
     const [isLoading, setIsLoading] = useState<boolean>(false);
+    const [modalVisible, setModalVisible] = useState(false);
     const { state, dispatch } = useContext(ProductsContext);
+
+    const hideModal = () => setModalVisible(false);
 
     useEffect(() => {
         getProducts(dispatch);
+        console.log('test');
     }, []);
 
     const renderItem = ({item}) => {
@@ -57,7 +64,7 @@ export const ProductListScreen: React.FC = ({ navigation }): JSX.Element => {
             });
     };
 
-    const keyExtractor = (product) => product.id;
+    const keyExtractor = () => uuid();
 
     return (
                 <View>
@@ -71,9 +78,11 @@ export const ProductListScreen: React.FC = ({ navigation }): JSX.Element => {
                             <Text style={styles.headerTitle}>
                                 Ecommerce Store
                             </Text>
-                            <IconBasket
-                                fill={'#FFFFFF'}
-                            />
+                            <Pressable onPress={() => {setModalVisible(true)}}>
+                                <IconBasket
+                                    fill={'#FFFFFF'}
+                                />
+                            </Pressable>
                         </Header>
                     </View>
                     <FlatList
@@ -94,6 +103,13 @@ export const ProductListScreen: React.FC = ({ navigation }): JSX.Element => {
                         onRefresh={onRefresh}
                         onEndReached={onScrollToEnd}
                         onEndReachedThreshold={0.2}
+                    />
+                    <ErrorModal
+                        isVisible={modalVisible}
+                        dismiss={hideModal}
+                        title={'Connection Error'}
+                        iconName={'times-circle'}
+                        iconColor={'#DD6B55'}
                     />
                 </View>
     );

@@ -4,6 +4,8 @@ import { View, Text, StyleSheet } from 'react-native';
 import { ProductListScreen } from '../../screens/ProductListScreen/ProductListScreen';
 import { CustomDrawerContent } from '../CustomDrawerContent/CustomDrawerContent';
 import { Icon } from '../icons/Icon';
+import { OrderConfirmationScreen } from '../../screens/OrderConfirmationScreen/OrderConfirmationScreen';
+import { LoginScreen } from '../../screens/LoginScreen/LoginScreen';
 
 const { Navigator, Screen } = createDrawerNavigator();
 
@@ -17,7 +19,8 @@ function Article() {
 
 export const Drawer: React.FC = (): JSX.Element => {
     return (
-        <Navigator screenOptions={{headerShown: false, overlayColor: 'rgba(0, 0, 0, 0.4)', drawerStyle: { width: '80%' }}} drawerContent={(props) => <CustomDrawerContent {...props} />}>
+        <Navigator screenOptions={{headerShown: false, overlayColor: 'rgba(0, 0, 0, 0.4)', drawerStyle: {width: '80%'}}}
+                   drawerContent={(props) => <CustomDrawerContent {...props} />}>
             <Screen name="Main" component={ProductListScreen}
                     options={{
                         title: 'Home',
@@ -47,7 +50,7 @@ export const Drawer: React.FC = (): JSX.Element => {
                         ),
                     }}
             />
-            <Screen name="Main2" component={ProductListScreen}
+            <Screen name="My Cart" component={LoginScreen}
                     options={{
                         groupName: 'My Account',
                         activeTintColor: '#8ED8F8',
@@ -61,7 +64,7 @@ export const Drawer: React.FC = (): JSX.Element => {
                         ),
                     }}
             />
-            <Screen name="Main3" component={ProductListScreen}
+            <Screen name="OrderConfirmation" component={OrderConfirmationScreen}
                     options={{
                         groupName: 'My Account',
                         activeTintColor: '#8ED8F8',

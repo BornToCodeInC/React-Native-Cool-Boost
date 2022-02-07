@@ -16,9 +16,8 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'space-between',
         alignItems: 'center',
-        paddingLeft: 20,
-        paddingRight: 20,
+        paddingHorizontal: 20,
         backgroundColor: '#008ACE',
-        height: 55,
+        maxHeight: 55,
     },
 });
