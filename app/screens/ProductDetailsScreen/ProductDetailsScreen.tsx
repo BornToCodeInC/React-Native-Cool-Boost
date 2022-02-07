@@ -47,19 +47,17 @@ export const ProductDetailsScreen: React.FC = ({ route, navigation }): JSX.Eleme
 
     return (
     <SafeAreaView>
-        <View style={styles.headerContainer}>
-            <Header>
-                <Pressable onPress={() => navigation.goBack()}>
-                    <IconArrowLeft fill={'#FFFFFF'} />
-                </Pressable>
-                <View style={styles.headerIcons}>
-                    <IconHeart fill={'#FFFFFF'} />
-                    <View style={styles.headerIconRight}>
-                        <IconBasket fill={'#FFFFFF'} />
-                    </View>
+        <Header>
+            <Pressable onPress={() => navigation.goBack()}>
+                <IconArrowLeft fill={'#FFFFFF'} />
+            </Pressable>
+            <View style={styles.headerIcons}>
+                <IconHeart fill={'#FFFFFF'} />
+                <View style={styles.headerIconRight}>
+                    <IconBasket fill={'#FFFFFF'} />
                 </View>
-            </Header>
-        </View>
+            </View>
+        </Header>
         <ScrollView
             refreshControl={
             <RefreshControl
@@ -119,9 +117,6 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         marginHorizontal: 20,
-    },
-    headerContainer: {
-        height: 55,
     },
     headerIconRight: {
         paddingLeft: 30,
