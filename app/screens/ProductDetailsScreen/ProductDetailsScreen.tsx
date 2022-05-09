@@ -52,6 +52,10 @@ export const ProductDetailsScreen: React.FC = ({
     wait(2000).then(() => setRefreshing(false));
   }, []);
 
+  const generateError = () => {
+    throw new Error('This is a test javascript crash!');
+  }
+
   const showModal = () => {
     setModalState(selectedColor ? successModalState : failModalState);
     setModalVisible(true);
@@ -105,7 +109,10 @@ export const ProductDetailsScreen: React.FC = ({
       </ScrollView>
       <View style={styles.container}>
         <Pressable style={styles.mainBtn} onPress={showModal}>
-          <Text style={styles.mainBtnText}>Add to cart</Text>
+          <Text style={styles.mainBtnText}>Add to cart 2</Text>
+        </Pressable>
+        <Pressable style={styles.mainBtn} onPress={generateError}>
+          <Text style={styles.mainBtnText}>Create crash report</Text>
         </Pressable>
         <AddToCartModal
           isVisible={modalVisible}
