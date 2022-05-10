@@ -1,4 +1,4 @@
-import React, {useContext, useEffect, useState} from 'react';
+import React, { useCallback, useContext, useEffect, useState } from 'react';
 import {
   StyleSheet,
   View,
@@ -21,6 +21,8 @@ import {InputWithLabel} from '../../components/InputWithLabel/InputWithLabel';
 import {WarningModal} from '../WarningModal/WarningModal';
 import {setUserProfile, signOut} from '../../actions/AuthAction';
 import {AuthContext} from '../../contexts/AuthContext';
+import { useFocusEffect } from '@react-navigation/native';
+import Analytics from 'appcenter-analytics';
 
 const AVATAR_PLACEHOLDER = require('../../../assets/images/camera.png');
 
@@ -34,6 +36,12 @@ export const ProfileScreen: React.FC = ({route, navigation}): JSX.Element => {
   const [building, setBuilding] = useState(state.userProfile.building);
   const [avatar, setAvatar] = useState(state.userProfile.avatar);
   const [isProfileModified, setIsProfileModified] = useState(false);
+
+  useFocusEffect(
+      useCallback(() => {
+        Analytics.trackEvent('Profile Screen is opened');
+      }, [])
+  );
 
   const showModal = () => {
     setModalVisible(true);

@@ -1,4 +1,4 @@
-import React, {useEffect, useState, useContext} from 'react';
+import React, { useEffect, useState, useContext, useCallback } from 'react';
 import {
   FlatList,
   View,
@@ -9,6 +9,8 @@ import {
   Pressable,
 } from 'react-native';
 import Axios from 'axios';
+import { useFocusEffect } from '@react-navigation/native';
+import Analytics from 'appcenter-analytics';
 import {v4 as uuid} from 'uuid';
 import {ProductListItem} from './components/ProductListItem/ProductListItem';
 import {Header} from '../../components/Header/Header';
@@ -31,6 +33,12 @@ export const ProductListScreen: React.FC = ({navigation}): JSX.Element => {
   useEffect(() => {
     getProducts(dispatch);
   }, []);
+
+  useFocusEffect(
+      useCallback(() => {
+        Analytics.trackEvent('Product List Screen is opened');
+      }, [])
+  );
 
   const renderItem = ({item}) => {
     return (
