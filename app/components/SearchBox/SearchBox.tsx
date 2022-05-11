@@ -20,8 +20,9 @@ export const SearchBox: React.FC<Props> = ({
   return (
     <View style={styles.container}>
       <Pressable
-        style={styles.searchButton}
-        onPress={() => handleSubmit && handleSubmit(searchQuery)}>
+          accessibilityRole="button"
+          style={styles.searchButton}
+          onPress={() => handleSubmit && handleSubmit(searchQuery)}>
         <IconSearch fill={'#8F8F8F'} />
       </Pressable>
       <TextInput
