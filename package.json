@@ -4,19 +4,43 @@
   "private": true,
   "scripts": {
     "android": "react-native run-android",
+    "android:release": "react-native run-android --variant release",
+    "build:android-debug": "detox build --configuration android.emu.debug",
+    "build:android-release": "detox build --configuration android.emu.release",
+    "test:android-debug": "detox test --configuration android.emu.debug",
+    "test:android-release": "detox test --configuration android.emu.release",
+    "test:android-release-ci": "detox test --configuration android.emu.release -l verbose --headless --gpu off --record-logs all --take-screenshots all",
+    "e2e:android-debug": "npm run build:android-debug && npm run test:android-debug",
+    "e2e:android-release": "npm run build:android-release && npm run test:android-release",
     "ios": "react-native run-ios",
     "start": "react-native start",
     "test": "jest",
     "lint": "eslint . --ext .js,.jsx,.ts,.tsx --fix",
-    "link": "react-native link react-native-vector-icons"
+    "link": "react-native link react-native-vector-icons",
+    "storybook": "start-storybook -p 7007",
+    "build-storybook": "build-storybook",
+    "prestorybook": "rnstl"
+  },
+  "config": {
+    "react-native-storybook-loader": {
+      "searchDir": [
+        "./app/components"
+      ],
+      "pattern": "**/*.stories.tsx",
+      "outputFile": "./storybook/storyLoader.js"
+    }
   },
   "dependencies": {
     "@babel/preset-env": "7.1.6",
-    "@react-native-async-storage/async-storage": "^1.16.1",
+    "@react-native-async-storage/async-storage": "^1.17.4",
     "@react-navigation/drawer": "^6.1.8",
     "@react-navigation/native": "^6.0.6",
     "@react-navigation/native-stack": "^6.2.5",
+    "appcenter": "4.4.4",
+    "appcenter-analytics": "4.4.4",
+    "appcenter-crashes": "4.4.4",
     "axios": "^0.24.0",
+    "node": "^17.7.2",
     "react": "17.0.2",
     "react-native": "0.66.4",
     "react-native-gesture-handler": "^2.2.0",
@@ -33,7 +57,16 @@
     "@babel/core": "^7.12.9",
     "@babel/runtime": "^7.12.5",
     "@react-native-community/eslint-config": "^2.0.0",
-    "@types/jest": "^26.0.23",
+    "@storybook/addon-actions": "^5.3",
+    "@storybook/addon-knobs": "^5.3",
+    "@storybook/addon-links": "^5.3",
+    "@storybook/addon-ondevice-actions": "^5.3.23",
+    "@storybook/addon-ondevice-knobs": "^5.3.25",
+    "@storybook/react-native": "^5.3.25",
+    "@storybook/react-native-server": "^5.3.23",
+    "@testing-library/jest-native": "^4.0.4",
+    "@testing-library/react-native": "^9.1.0",
+    "@types/jest": "26.0.24",
     "@types/react-native": "^0.66.4",
     "@types/react-native-vector-icons": "^6.4.10",
     "@types/react-test-renderer": "^17.0.1",
@@ -41,9 +74,14 @@
     "@typescript-eslint/eslint-plugin": "^5.7.0",
     "@typescript-eslint/parser": "^5.7.0",
     "babel-jest": "^26.6.3",
+    "babel-loader": "^8.2.5",
+    "detox": "^19.6.9",
+    "detox-cli": "^19.0.0",
     "eslint": "^7.14.0",
-    "jest": "^26.6.3",
+    "jest": "^28.1.0",
     "metro-react-native-babel-preset": "^0.66.2",
+    "react-dom": "17.0.2",
+    "react-native-storybook-loader": "^2.0.5",
     "react-native-svg": "^12.1.1",
     "react-test-renderer": "17.0.2",
     "typescript": "^4.4.4"
@@ -60,6 +98,15 @@
       "jsx",
       "json",
       "node"
+    ],
+    "setupFilesAfterEnv": [
+      "@testing-library/jest-native/extend-expect"
+    ],
+    "setupFiles": [
+      "./node_modules/react-native-gesture-handler/jestSetup.js"
+    ],
+    "transformIgnorePatterns": [
+      "node_modules/(?!(jest-)?@?react-native|@react-native-community|@react-navigation)"
     ]
   },
   "rnpm": {

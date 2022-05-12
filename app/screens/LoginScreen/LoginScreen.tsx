@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useCallback} from 'react';
 import {
   StyleSheet,
   Image,
@@ -7,14 +7,22 @@ import {
   ScrollView,
   Pressable,
 } from 'react-native';
+import { useFocusEffect } from '@react-navigation/native';
+import Analytics from 'appcenter-analytics';
 import {PrimaryButton} from '../../components/PrimaryButton/PrimaryButton';
 import {Header} from '../../components/Header/Header';
 import {IconArrowLeft} from '../../components/icons/IconArrowLeft';
 import {LoadingAnimation} from '../../components/LoadingAnimation/LoadingAnimation';
 
 export const LoginScreen: React.FC = ({route, navigation}): JSX.Element => {
-  console.log(route);
   const [isLoading, setIsLoading] = useState(false);
+
+  useFocusEffect(
+      useCallback(() => {
+        Analytics.trackEvent('Login Screen is opened');
+      }, [])
+  );
+
   return (
     <SafeAreaView style={styles.container}>
       <Header>

@@ -1,4 +1,4 @@
-import React, {useContext, useState} from 'react';
+import React, { useCallback, useContext, useState } from 'react';
 import {
   StyleSheet,
   View,
@@ -15,6 +15,8 @@ import {IconHeart} from '../../components/icons/IconHeart';
 import {IconArrowLeft} from '../../components/icons/IconArrowLeft';
 import {ProductsContext} from '../../contexts/ProductsContext';
 import {AddToCartModal} from '../AddToCartModal/AddToCartModal';
+import { useFocusEffect } from '@react-navigation/native';
+import Analytics from 'appcenter-analytics';
 
 const wait = (timeout: number) => {
   return new Promise(resolve => setTimeout(resolve, timeout));
@@ -51,6 +53,16 @@ export const ProductDetailsScreen: React.FC = ({
     setRefreshing(true);
     wait(2000).then(() => setRefreshing(false));
   }, []);
+
+  useFocusEffect(
+      useCallback(() => {
+        Analytics.trackEvent('Product Details Screen is opened');
+      }, [])
+  );
+
+  const generateError = () => {
+    throw new Error('This is a test javascript crash!');
+  }
 
   const showModal = () => {
     setModalState(selectedColor ? successModalState : failModalState);
@@ -105,7 +117,10 @@ export const ProductDetailsScreen: React.FC = ({
       </ScrollView>
       <View style={styles.container}>
         <Pressable style={styles.mainBtn} onPress={showModal}>
-          <Text style={styles.mainBtnText}>Add to cart</Text>
+          <Text style={styles.mainBtnText}>Add to cart 2</Text>
+        </Pressable>
+        <Pressable style={styles.mainBtn} onPress={generateError}>
+          <Text style={styles.mainBtnText}>Create crash report</Text>
         </Pressable>
         <AddToCartModal
           isVisible={modalVisible}

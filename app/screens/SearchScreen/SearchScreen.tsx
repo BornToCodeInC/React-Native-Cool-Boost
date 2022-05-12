@@ -1,9 +1,8 @@
 import React, {
   useEffect,
   useState,
-  useContext,
   useRef,
-  MutableRefObject,
+  useCallback,
 } from 'react';
 import {
   FlatList,
@@ -11,7 +10,6 @@ import {
   StyleSheet,
   Text,
   RefreshControl,
-  Alert,
   Pressable,
   TextInput,
 } from 'react-native';
@@ -23,6 +21,8 @@ import {IconBasket} from '../../components/icons/IconBasket';
 import {IconArrowLeft} from '../../components/icons/IconArrowLeft';
 import {API_URL} from '../../helpers/constants';
 import {SearchBox} from '../../components/SearchBox/SearchBox';
+import { useFocusEffect } from '@react-navigation/native';
+import Analytics from 'appcenter-analytics';
 
 export const SearchScreen: React.FC = ({route, navigation}): JSX.Element => {
   const [list, setList] = useState<any>([]);
@@ -30,6 +30,12 @@ export const SearchScreen: React.FC = ({route, navigation}): JSX.Element => {
   const [searchQuery, setSearchQuery] = useState('');
 
   const searchInputRef = useRef<TextInput>(null);
+
+  useFocusEffect(
+      useCallback(() => {
+        Analytics.trackEvent('Search Screen is opened');
+      }, [])
+  );
 
   useEffect(() => {
     searchInputRef.current?.focus();

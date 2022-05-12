@@ -1,16 +1,24 @@
-import React, {useState, useContext} from 'react';
+import React, { useState, useContext, useCallback } from 'react';
 import {Pressable, StyleSheet, Text, View} from 'react-native';
 import {signIn} from '../../actions/AuthAction';
 import {AuthContext} from '../../contexts/AuthContext';
 import {InputWithLabel} from '../../components/InputWithLabel/InputWithLabel';
 import {PrimaryButton} from '../../components/PrimaryButton/PrimaryButton';
 import {WarningModal} from '../WarningModal/WarningModal';
+import { useFocusEffect } from '@react-navigation/native';
+import Analytics from 'appcenter-analytics';
 
 export const SignInScreen: React.FC = ({navigation}): JSX.Element => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [modalVisible, setModalVisible] = useState(false);
   const {state, dispatch} = useContext(AuthContext);
+
+  useFocusEffect(
+      useCallback(() => {
+        Analytics.trackEvent('SignIn Screen is opened');
+      }, [])
+  );
 
   const showModal = () => {
     setModalVisible(true);

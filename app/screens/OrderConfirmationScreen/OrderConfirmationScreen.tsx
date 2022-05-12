@@ -1,5 +1,7 @@
-import React from 'react';
+import React, { useCallback } from 'react';
 import {StyleSheet, Image, Text, SafeAreaView, ScrollView} from 'react-native';
+import Analytics from 'appcenter-analytics';
+import { useFocusEffect } from '@react-navigation/native';
 import {Fireworks} from '../../components/Fireworks/Fireworks';
 import {PrimaryButton} from '../../components/PrimaryButton/PrimaryButton';
 
@@ -7,6 +9,12 @@ export const OrderConfirmationScreen: React.FC = ({
   route,
   navigation,
 }): JSX.Element => {
+  useFocusEffect(
+      useCallback(() => {
+        Analytics.trackEvent('Order Confirmation Screen is opened');
+      }, [])
+  );
+
   return (
     <SafeAreaView style={styles.container}>
       <ScrollView contentContainerStyle={styles.scrollView}>
