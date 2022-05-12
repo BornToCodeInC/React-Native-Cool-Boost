@@ -16,6 +16,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.List;
 import cl.json.RNSharePackage;
 import cl.json.ShareApplication;
+import com.microsoft.codepush.react.CodePush;
 
 public class MainApplication extends Application implements ReactApplication {
 
@@ -33,6 +34,7 @@ public class MainApplication extends Application implements ReactApplication {
           // Packages that cannot be autolinked yet can be added manually here, for example:
           // packages.add(new MyReactNativePackage());
           // packages.add(new RNSharePackage());
+          packages.add(new RNENVConfigPackage());
           return packages;
         }
 
@@ -44,6 +46,11 @@ public class MainApplication extends Application implements ReactApplication {
         @Override
         protected JSIModulePackage getJSIModulePackage() {
           return new ReanimatedJSIModulePackage(); // <- add
+        }
+
+        @Override
+        protected String getJSBundleFile() {
+            return CodePush.getJSBundleFile();
         }
       };
 
