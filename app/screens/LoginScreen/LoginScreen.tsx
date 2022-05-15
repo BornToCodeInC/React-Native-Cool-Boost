@@ -7,7 +7,7 @@ import {
   ScrollView,
   Pressable,
 } from 'react-native';
-import { useFocusEffect } from '@react-navigation/native';
+import {useFocusEffect} from '@react-navigation/native';
 import Analytics from 'appcenter-analytics';
 import {PrimaryButton} from '../../components/PrimaryButton/PrimaryButton';
 import {Header} from '../../components/Header/Header';
@@ -18,9 +18,9 @@ export const LoginScreen: React.FC = ({route, navigation}): JSX.Element => {
   const [isLoading, setIsLoading] = useState(false);
 
   useFocusEffect(
-      useCallback(() => {
-        Analytics.trackEvent('Login Screen is opened');
-      }, [])
+    useCallback(() => {
+      Analytics.trackEvent('Login Screen is opened');
+    }, []),
   );
 
   return (

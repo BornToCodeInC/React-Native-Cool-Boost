@@ -1,4 +1,4 @@
-import React, { useCallback, useContext, useState } from 'react';
+import React, {useCallback, useContext, useState} from 'react';
 import {
   StyleSheet,
   View,
@@ -15,7 +15,7 @@ import {IconHeart} from '../../components/icons/IconHeart';
 import {IconArrowLeft} from '../../components/icons/IconArrowLeft';
 import {ProductsContext} from '../../contexts/ProductsContext';
 import {AddToCartModal} from '../AddToCartModal/AddToCartModal';
-import { useFocusEffect } from '@react-navigation/native';
+import {useFocusEffect} from '@react-navigation/native';
 import Analytics from 'appcenter-analytics';
 
 const wait = (timeout: number) => {
@@ -47,7 +47,8 @@ export const ProductDetailsScreen: React.FC = ({
   const {state} = useContext(ProductsContext);
 
   const product =
-    currentProduct || state.data.filter(product => product.id === id)[0];
+    currentProduct ||
+    state.data.filter(selectedProduct => selectedProduct.id === id)[0];
 
   const onRefresh = React.useCallback(() => {
     setRefreshing(true);
@@ -55,14 +56,14 @@ export const ProductDetailsScreen: React.FC = ({
   }, []);
 
   useFocusEffect(
-      useCallback(() => {
-        Analytics.trackEvent('Product Details Screen is opened');
-      }, [])
+    useCallback(() => {
+      Analytics.trackEvent('Product Details Screen is opened');
+    }, []),
   );
 
   const generateError = () => {
     throw new Error('This is a test javascript crash!');
-  }
+  };
 
   const showModal = () => {
     setModalState(selectedColor ? successModalState : failModalState);

@@ -1,6 +1,6 @@
 import React from 'react';
 import {createDrawerNavigator} from '@react-navigation/drawer';
-import {View, Text, StyleSheet} from 'react-native';
+import {View, Text} from 'react-native';
 import {ProductListScreen} from '../../screens/ProductListScreen/ProductListScreen';
 import {CustomDrawerContent} from '../CustomDrawerContent/CustomDrawerContent';
 import {Icon} from '../icons/Icon';

@@ -1,9 +1,10 @@
+/* eslint-disable */
 import React, {useState, useEffect} from 'react';
 import {Dimensions, StyleSheet, View, Animated, Easing} from 'react-native';
 import {v4 as uuid} from 'uuid';
 import {getRandom} from '../../helpers/utils';
 
-export const Fireworks: React.FC = ({route, navigation}): JSX.Element => {
+export const Fireworks: React.FC = (): JSX.Element => {
   const [fadingOpacity, setFadingOpacity] = useState(new Animated.Value(1));
   const [movingBall, setMovingBall] = useState(new Animated.Value(0));
   const [explosionCoordinates, setExplosionCoordinates] = useState({

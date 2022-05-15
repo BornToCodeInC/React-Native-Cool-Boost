@@ -83,11 +83,9 @@ export const CustomDrawerContent: React.FC = (props: any): JSX.Element => {
           );
         })}
         <DrawerItem
-          label={({focused, color}) => (
-            <Text style={styles.drawerLabel}>Share</Text>
-          )}
+          label={() => <Text style={styles.drawerLabel}>Share</Text>}
           onPress={openShare}
-          icon={({focused, color, size}) => (
+          icon={({focused}) => (
             <Icon
               color={focused ? '#7CC' : '#008ACE'}
               size={17}

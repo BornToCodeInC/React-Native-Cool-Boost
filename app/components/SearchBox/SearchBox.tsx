@@ -14,15 +14,13 @@ export const SearchBox: React.FC<Props> = ({
   searchInputRef,
 }): JSX.Element => {
   const [searchQuery, setSearchQuery] = useState(searchInputValue || '');
-  const handlePress = () => {
-    handleSubmit && handleSubmit(searchQuery);
-  };
+
   return (
     <View style={styles.container}>
       <Pressable
-          accessibilityRole="button"
-          style={styles.searchButton}
-          onPress={() => handleSubmit && handleSubmit(searchQuery)}>
+        accessibilityRole="button"
+        style={styles.searchButton}
+        onPress={() => handleSubmit && handleSubmit(searchQuery)}>
         <IconSearch fill={'#8F8F8F'} />
       </Pressable>
       <TextInput

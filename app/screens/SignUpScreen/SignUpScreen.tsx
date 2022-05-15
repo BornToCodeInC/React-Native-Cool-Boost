@@ -1,10 +1,10 @@
-import React, { useState, useContext, useCallback } from 'react';
+import React, {useState, useContext, useCallback} from 'react';
 import {Pressable, StyleSheet, Text, View} from 'react-native';
 import {signUp} from '../../actions/AuthAction';
 import {AuthContext} from '../../contexts/AuthContext';
 import {InputWithLabel} from '../../components/InputWithLabel/InputWithLabel';
 import {PrimaryButton} from '../../components/PrimaryButton/PrimaryButton';
-import { useFocusEffect } from '@react-navigation/native';
+import {useFocusEffect} from '@react-navigation/native';
 import Analytics from 'appcenter-analytics';
 
 export const SignUpScreen: React.FC = ({navigation}): JSX.Element => {
@@ -14,11 +14,11 @@ export const SignUpScreen: React.FC = ({navigation}): JSX.Element => {
   const [passwordConfirmation, setPasswordConfirmation] = useState('');
   const {dispatch} = useContext(AuthContext);
 
-    useFocusEffect(
-        useCallback(() => {
-            Analytics.trackEvent('SignUp Screen is opened');
-        }, [])
-    );
+  useFocusEffect(
+    useCallback(() => {
+      Analytics.trackEvent('SignUp Screen is opened');
+    }, []),
+  );
 
   const handleSubmit = async () => {
     if (

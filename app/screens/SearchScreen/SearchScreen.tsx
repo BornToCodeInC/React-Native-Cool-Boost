@@ -1,9 +1,4 @@
-import React, {
-  useEffect,
-  useState,
-  useRef,
-  useCallback,
-} from 'react';
+import React, {useEffect, useState, useRef, useCallback} from 'react';
 import {
   FlatList,
   View,
@@ -21,7 +16,7 @@ import {IconBasket} from '../../components/icons/IconBasket';
 import {IconArrowLeft} from '../../components/icons/IconArrowLeft';
 import {API_URL} from '../../helpers/constants';
 import {SearchBox} from '../../components/SearchBox/SearchBox';
-import { useFocusEffect } from '@react-navigation/native';
+import {useFocusEffect} from '@react-navigation/native';
 import Analytics from 'appcenter-analytics';
 
 export const SearchScreen: React.FC = ({route, navigation}): JSX.Element => {
@@ -32,9 +27,9 @@ export const SearchScreen: React.FC = ({route, navigation}): JSX.Element => {
   const searchInputRef = useRef<TextInput>(null);
 
   useFocusEffect(
-      useCallback(() => {
-        Analytics.trackEvent('Search Screen is opened');
-      }, [])
+    useCallback(() => {
+      Analytics.trackEvent('Search Screen is opened');
+    }, []),
   );
 
   useEffect(() => {
@@ -52,21 +47,7 @@ export const SearchScreen: React.FC = ({route, navigation}): JSX.Element => {
     );
   };
 
-  const onRefresh = React.useCallback(() => {
-    setIsLoading(true);
-    getData();
-  }, []);
-
-  const onScrollToEnd = () => {
-    getData();
-  };
-
-  const handleSubmit = (query: string) => {
-    setSearchQuery(query);
-    getData();
-  };
-
-  const getData = () => {
+  const getData = useCallback(() => {
     const limit = 7;
     const offset = list.length;
     const page = Math.ceil(offset / limit) + 1;
@@ -86,6 +67,20 @@ export const SearchScreen: React.FC = ({route, navigation}): JSX.Element => {
     } else {
       setList([]);
     }
+  }, [list, searchQuery]);
+
+  const onRefresh = React.useCallback(() => {
+    setIsLoading(true);
+    getData();
+  }, [getData]);
+
+  const onScrollToEnd = () => {
+    getData();
+  };
+
+  const handleSubmit = (query: string) => {
+    setSearchQuery(query);
+    getData();
   };
 
   const keyExtractor = () => uuid();

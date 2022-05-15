@@ -1,4 +1,4 @@
-import React, { useCallback, useContext, useEffect, useState } from 'react';
+import React, {useCallback, useContext, useEffect, useState} from 'react';
 import {
   StyleSheet,
   View,
@@ -21,7 +21,7 @@ import {InputWithLabel} from '../../components/InputWithLabel/InputWithLabel';
 import {WarningModal} from '../WarningModal/WarningModal';
 import {setUserProfile, signOut} from '../../actions/AuthAction';
 import {AuthContext} from '../../contexts/AuthContext';
-import { useFocusEffect } from '@react-navigation/native';
+import {useFocusEffect} from '@react-navigation/native';
 import Analytics from 'appcenter-analytics';
 
 const AVATAR_PLACEHOLDER = require('../../../assets/images/camera.png');
@@ -38,9 +38,9 @@ export const ProfileScreen: React.FC = ({route, navigation}): JSX.Element => {
   const [isProfileModified, setIsProfileModified] = useState(false);
 
   useFocusEffect(
-      useCallback(() => {
-        Analytics.trackEvent('Profile Screen is opened');
-      }, [])
+    useCallback(() => {
+      Analytics.trackEvent('Profile Screen is opened');
+    }, []),
   );
 
   const showModal = () => {
@@ -94,7 +94,8 @@ export const ProfileScreen: React.FC = ({route, navigation}): JSX.Element => {
     } else {
       setIsProfileModified(false);
     }
-  }, [fullName, phone, city, street, building, avatar]);
+  }, [fullName, phone, city, street, building, avatar, state.userProfile.avatar, state.userProfile.building,
+    state.userProfile.city, state.userProfile.fullName, state.userProfile.phone, state.userProfile.street]);
 
   return (
     <SafeAreaView style={styles.container}>
