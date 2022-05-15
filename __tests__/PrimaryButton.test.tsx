@@ -4,7 +4,7 @@ import {fireEvent, render} from '@testing-library/react-native';
 import {PrimaryButton} from '../app/components/PrimaryButton/PrimaryButton';
 
 describe('SearchBox.tsx', () => {
-  test('renders correctly', () => {
+  test('renders correctly', async () => {
     const handler = jest.fn();
     const {toJSON} = render(
       <PrimaryButton content="Submit" handlePress={handler} />,

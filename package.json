@@ -17,7 +17,7 @@
     "e2e:android-release": "npm run build:android-release && npm run test:android-release",
     "ios": "react-native run-ios",
     "start": "react-native start",
-    "test": "jest",
+    "test": "jest --forceExit",
     "lint": "eslint . --ext .js,.jsx,.ts,.tsx",
     "lint:fix": "eslint . --ext .js,.jsx,.ts,.tsx --fix",
     "link": "react-native link react-native-vector-icons",
@@ -106,17 +106,7 @@
       "tsx",
       "js",
       "jsx",
-      "json",
-      "node"
-    ],
-    "setupFilesAfterEnv": [
-      "@testing-library/jest-native/extend-expect"
-    ],
-    "setupFiles": [
-      "./node_modules/react-native-gesture-handler/jestSetup.js"
-    ],
-    "transformIgnorePatterns": [
-      "node_modules/(?!(jest-)?@?react-native|@react-native-community|@react-navigation)"
+      "json"
     ]
   },
   "rnpm": {
