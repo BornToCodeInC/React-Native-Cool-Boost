@@ -1,0 +1,34 @@
+name: Continuous Integration
+
+on:
+  push:
+jobs:
+  test:
+    name: Tests
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        version: 16
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+      - uses: actions/setup-node@master
+        with:
+            node-version: ${{ matrix.version }}
+      - uses: c-hive/gha-yarn-cache@v1
+
+      - name: Setup yarn
+        run: npm install -g yarn
+
+      - name: Install node modules
+        run: |
+          yarn install
+      - name: Run CI with Lefthook
+        run: |
+          yarn lefthook run ci-hook
+      - name: Run lint
+        run: |
+          yarn lint
+      - name: Run test
+        run: |
+          yarn test
