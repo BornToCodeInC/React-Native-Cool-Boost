@@ -1,5 +1,5 @@
 import React from 'react';
-import {StyleSheet, TouchableOpacity, Image, Text, View} from 'react-native';
+import {StyleSheet, TouchableOpacity, Image, Text} from 'react-native';
 import {PICTURES_API_URL} from '../../../../helpers/constants';
 
 export const ProductListItem: React.FC<any> = ({

@@ -1,0 +1,28 @@
+name: Continuous Integration
+
+on:
+  push:
+jobs:
+  test:
+    name: Tests
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+      - uses: actions/setup-node@master
+        with:
+            node-version: 16
+      - uses: c-hive/gha-yarn-cache@v1
+
+      - name: Setup yarn
+        run: npm install -g yarn
+
+      - name: Install node modules
+        run: |
+          yarn install
+      - name: Run lint
+        run: |
+          yarn lint
+      - name: Run test
+        run: |
+          yarn test

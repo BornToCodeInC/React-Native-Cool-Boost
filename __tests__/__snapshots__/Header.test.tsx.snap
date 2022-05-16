@@ -19,23 +19,3 @@ exports[`Header.test.tsx renders correctly 1`] = `
   }
 />
 `;
-
-exports[`renders correctly 1`] = `
-<View
-  style={
-    Object {
-      "alignItems": "center",
-      "backgroundColor": "#008ACE",
-      "flex": 1,
-      "flexDirection": "row",
-      "justifyContent": "space-between",
-      "minHeight": 55,
-      "paddingHorizontal": 20,
-      "position": "absolute",
-      "top": 0,
-      "width": "100%",
-      "zIndex": 1,
-    }
-  }
-/>
-`;

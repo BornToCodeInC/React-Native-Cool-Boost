@@ -104,7 +104,7 @@ export const LoadingAnimation = () => {
         offset.value = withSequence(
           withTiming(20),
           withTiming(-20),
-          withTiming(0, undefined, isFinished => {
+          withTiming(0, undefined, () => {
             backgroundColor.value = withTiming(1);
             sharedWidth.value = withTiming(wWidth / 2);
           }),
@@ -112,7 +112,7 @@ export const LoadingAnimation = () => {
         console.log(resultStr);
       },
     );
-  }, []);
+  }, [backgroundColor, offset, progress, sharedWidth]);
 
   return (
     <Animated.View style={[styles.container, rContainerStyle]}>

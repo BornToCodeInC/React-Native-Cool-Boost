@@ -131,6 +131,22 @@ android {
 
     compileSdkVersion rootProject.ext.compileSdkVersion
 
+    flavorDimensions "env"
+    productFlavors {
+        dev {
+            resValue "string", "app_name", "MyAppDev"
+            applicationIdSuffix ".dev"
+        }
+        qa {
+            resValue "string", "app_name", "MyAppQa"
+            applicationIdSuffix ".qa"
+        }
+        prod {
+            resValue "string", "app_name", "MyApp"
+            applicationIdSuffix ""
+        }
+    }
+
     defaultConfig {
         applicationId "com.myapp"
         minSdkVersion rootProject.ext.minSdkVersion
@@ -247,3 +263,5 @@ task copyDownloadableDepsToLibs(type: Copy) {
 }
 
 apply from: file("../../node_modules/@react-native-community/cli-platform-android/native_modules.gradle"); applyNativeModulesAppBuildGradle(project)
+//apply from: "../../node_modules/react-native/react.gradle"
+apply from: "../../node_modules/react-native-code-push/android/codepush.gradle"

@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useContext, useCallback } from 'react';
+import React, {useEffect, useState, useContext, useCallback} from 'react';
 import {
   FlatList,
   View,
@@ -9,7 +9,7 @@ import {
   Pressable,
 } from 'react-native';
 import Axios from 'axios';
-import { useFocusEffect } from '@react-navigation/native';
+import {useFocusEffect} from '@react-navigation/native';
 import Analytics from 'appcenter-analytics';
 import {v4 as uuid} from 'uuid';
 import {ProductListItem} from './components/ProductListItem/ProductListItem';
@@ -32,12 +32,12 @@ export const ProductListScreen: React.FC = ({navigation}): JSX.Element => {
 
   useEffect(() => {
     getProducts(dispatch);
-  }, []);
+  }, [dispatch]);
 
   useFocusEffect(
-      useCallback(() => {
-        Analytics.trackEvent('Product List Screen is opened');
-      }, [])
+    useCallback(() => {
+      Analytics.trackEvent('Product List Screen is opened');
+    }, []),
   );
 
   const renderItem = ({item}) => {
@@ -49,34 +49,37 @@ export const ProductListScreen: React.FC = ({navigation}): JSX.Element => {
     );
   };
 
+  const getData = useCallback(
+    (isRefreshing: boolean) => {
+      const limit = 7;
+      const offset = isRefreshing ? 0 : list.length;
+      const page = Math.ceil(offset / limit) + 1;
+      Axios.get(
+        `${API_URL}?fields[product]=price,description,name&per_page=${limit}&page=${page}`,
+      )
+        .then(response => {
+          setList(
+            isRefreshing ? list.concat(response.data.data) : response.data.data,
+          );
+        })
+        .catch(e => {
+          console.log(e);
+        })
+        .finally(() => {
+          setIsLoading(false);
+        });
+    },
+    [list],
+  );
+
   const onRefresh = React.useCallback(() => {
     setIsLoading(true);
     getData(isLoading);
-  }, []);
+  }, [getData, isLoading]);
 
   const onScrollToEnd = () => {
     Alert.alert(`${state.data.length}`);
     getProducts(dispatch, state.data.length);
-  };
-
-  const getData = (isRefreshing: boolean) => {
-    const limit = 7;
-    const offset = isRefreshing ? 0 : list.length;
-    const page = Math.ceil(offset / limit) + 1;
-    Axios.get(
-      `${API_URL}?fields[product]=price,description,name&per_page=${limit}&page=${page}`,
-    )
-      .then(response => {
-        setList(
-          isRefreshing ? list.concat(response.data.data) : response.data.data,
-        );
-      })
-      .catch(e => {
-        console.log(e);
-      })
-      .finally(() => {
-        setIsLoading(false);
-      });
   };
 
   const keyExtractor = () => uuid();

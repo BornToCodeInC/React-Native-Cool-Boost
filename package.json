@@ -4,7 +4,10 @@
   "private": true,
   "scripts": {
     "android": "react-native run-android",
+    "android:dev": "react-native run-android NODE_OPTIONS=--openssl-legacy-provider — variant=devDebug — appIdSuffix=dev",
     "android:release": "react-native run-android --variant release",
+    "android:dev:build": "cd android && gradlew assembleDevRelease",
+    "android:prod:build": "cd android && gradlew assembleProdRelease",
     "build:android-debug": "detox build --configuration android.emu.debug",
     "build:android-release": "detox build --configuration android.emu.release",
     "test:android-debug": "detox test --configuration android.emu.debug",
@@ -14,8 +17,9 @@
     "e2e:android-release": "npm run build:android-release && npm run test:android-release",
     "ios": "react-native run-ios",
     "start": "react-native start",
-    "test": "jest",
-    "lint": "eslint . --ext .js,.jsx,.ts,.tsx --fix",
+    "test": "jest --forceExit",
+    "lint": "eslint . --ext .js,.jsx,.ts,.tsx",
+    "lint:fix": "eslint . --ext .js,.jsx,.ts,.tsx --fix",
     "link": "react-native link react-native-vector-icons",
     "storybook": "start-storybook -p 7007",
     "build-storybook": "build-storybook",
@@ -32,10 +36,12 @@
   },
   "dependencies": {
     "@babel/preset-env": "7.1.6",
+    "@babel/preset-typescript": "^7.16.7",
     "@react-native-async-storage/async-storage": "^1.17.4",
     "@react-navigation/drawer": "^6.1.8",
     "@react-navigation/native": "^6.0.6",
     "@react-navigation/native-stack": "^6.2.5",
+    "@types/react-native-dotenv": "^0.2.0",
     "appcenter": "4.4.4",
     "appcenter-analytics": "4.4.4",
     "appcenter-crashes": "4.4.4",
@@ -43,6 +49,8 @@
     "node": "^17.7.2",
     "react": "17.0.2",
     "react-native": "0.66.4",
+    "react-native-code-push": "^7.0.4",
+    "react-native-dotenv": "^3.3.1",
     "react-native-gesture-handler": "^2.2.0",
     "react-native-get-random-values": "^1.7.2",
     "react-native-image-picker": "^4.7.3",
@@ -54,7 +62,9 @@
     "uuid": "^8.3.2"
   },
   "devDependencies": {
-    "@babel/core": "^7.12.9",
+    "@babel/cli": "^7.17.10",
+    "@babel/core": "^7.17.10",
+    "@babel/node": "^7.17.10",
     "@babel/runtime": "^7.12.5",
     "@react-native-community/eslint-config": "^2.0.0",
     "@storybook/addon-actions": "^5.3",
@@ -96,17 +106,7 @@
       "tsx",
       "js",
       "jsx",
-      "json",
-      "node"
-    ],
-    "setupFilesAfterEnv": [
-      "@testing-library/jest-native/extend-expect"
-    ],
-    "setupFiles": [
-      "./node_modules/react-native-gesture-handler/jestSetup.js"
-    ],
-    "transformIgnorePatterns": [
-      "node_modules/(?!(jest-)?@?react-native|@react-native-community|@react-navigation)"
+      "json"
     ]
   },
   "rnpm": {

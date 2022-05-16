@@ -44,7 +44,7 @@ export const ErrorModal: React.FC<Props> = ({
         translateX.value = ctx.startX + event.translationX;
         translateY.value = ctx.startY + event.translationY;
       },
-      onEnd: event => {
+      onEnd: () => {
         translateX.value = withSpring(0);
         const distance = Math.sqrt(
           translateX.value ** 2 + translateY.value ** 2,
@@ -86,7 +86,7 @@ export const ErrorModal: React.FC<Props> = ({
 
   useEffect(() => {
     modalOpacity.value = 1;
-  }, []);
+  }, [modalOpacity]);
   return (
     <View style={styles.container}>
       <Modal

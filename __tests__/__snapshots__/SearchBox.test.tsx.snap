@@ -9,6 +9,7 @@ exports[`SearchBox.tsx renders correctly 1`] = `
   }
 >
   <View
+    accessibilityRole="button"
     accessible={true}
     collapsable={false}
     focusable={true}
