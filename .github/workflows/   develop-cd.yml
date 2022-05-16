@@ -1,0 +1,67 @@
+name: Development Distribution
+
+on:
+  push:
+    branches:
+      - develop
+
+jobs:
+  dev-distribution:
+    name: Development Distribution
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+      - uses: actions/setup-node@master
+        with:
+          node-version: 16
+      - uses: c-hive/gha-yarn-cache@v1
+
+      - name: Setup yarn
+        run: npm install -g yarn
+      - name: Install node modules
+        run: |
+          yarn install
+      - name: Run test
+        run: |
+          yarn test
+      - name: Cache Gradle Wrapper
+        uses: actions/cache@v2
+        with:
+          path: ~/.gradle/wrapper
+          key: ${{ runner.os }}-gradle-wrapper-${{ hashFiles('gradle/wrapper/gradle-wrapper.properties') }}
+
+      - name: Cache Gradle Dependencies
+        uses: actions/cache@v1
+        with:
+          path: ~/.gradle/caches
+          key: ${{ runner.os }}-gradle-caches-${{ hashFiles('gradle/wrapper/gradle-wrapper.properties') }}
+          restore-keys: |
+            ${{ runner.os }}-gradle-caches-
+      - name: Make Gradlew Executable
+        run: cd android && chmod +x ./gradlew
+      - name: set up JDK 1.8
+        uses: actions/setup-java@v1
+        with:
+          java-version: 1.8
+      - name: Build Android Release
+        run: |
+          cd android && ./gradlew assembleDevRelease --no-daemon
+      - name: Upload Artifact
+        uses: actions/upload-artifact@v1
+        with:
+          name: app-release.apk
+          path: android/app/build/outputs/apk/dev/release/
+
+      - name: Upload artefact to App Center
+        env:
+          appcenterToken: ${{ secrets.APPCENTER_TOKEN }}
+          appcenterGroup: ${{ secrets.QA_GROUP_NAME }}
+        uses: Viktoryia_Yalavaya-epam.com/AppCenter-Github-Action@v1
+        with:
+         appName: Viktoryia_Yalavaya-epam.com/RNApp
+         token: appcenterToken
+         group: appcenterGroup
+         file: app/build/outputs/apk/dev/release/app-dev-release.apk
+         notifyTesters: true
+         debug: false

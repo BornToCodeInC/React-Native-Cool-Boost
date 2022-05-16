@@ -6,6 +6,7 @@ import com.facebook.react.bridge.ReactContextBaseJavaModule;
 import com.facebook.react.bridge.ReactMethod;
 import java.util.Map;
 import java.util.HashMap;
+
 public class RNENVConfigModule extends ReactContextBaseJavaModule {
     RNENVConfigModule(ReactApplicationContext context) {
         super(context);
@@ -17,7 +18,7 @@ public class RNENVConfigModule extends ReactContextBaseJavaModule {
     @Override
     public Map<String, Object> getConstants() {
         final Map<String, Object> constants = new HashMap<>();
-        constants.put("env", BuildConfig.FLAVOR);
+        constants.put("env", com.myapp.BuildConfig.FLAVOR);
         return constants;
     }
 }
